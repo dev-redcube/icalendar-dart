@@ -43,6 +43,12 @@ class ICalendar extends Equatable {
         .toList();
   }
 
+  static List<ICalendar> fromICalendarLines(List<String> lines) {
+    return crawlICalendarLines(lines)
+        .map((e) => ICalendar.fromCrawledBlock(e))
+        .toList();
+  }
+
   factory ICalendar.fromCrawledBlock(CrawledBlock block) {
     assert(
       block.blockName.toUpperCase() == "VCALENDAR",
