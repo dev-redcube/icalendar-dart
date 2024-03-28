@@ -46,8 +46,15 @@ class DateTimeValue extends CalendarValue<DateTime> {
   }) {
     final normalizedValue = value.trim().toUpperCase();
 
-    final parseValue =
-        "${normalizedValue.substring(0, 4)}.${normalizedValue.substring(4, 6)}.${normalizedValue.substring(6, 8)}T${normalizedValue.substring(9, 11)}.${normalizedValue.substring(11, 13)}.${normalizedValue.substring(13, 15)}";
+    late final String parseValue;
+    try {
+      parseValue =
+          "${normalizedValue.substring(0, 4)}.${normalizedValue.substring(4, 6)}.${normalizedValue.substring(6, 8)}T${normalizedValue.substring(9, 11)}.${normalizedValue.substring(11, 13)}.${normalizedValue.substring(13, 15)}";
+    } catch (e) {
+      // No time provided
+      parseValue =
+          "${normalizedValue.substring(0, 4)}.${normalizedValue.substring(4, 6)}.${normalizedValue.substring(6, 8)}T00.00.00";
+    }
 
     return DateTimeValue(
       DateFormat("yyyy.MM.dd'T'HH.mm.ss").parse(

@@ -13,7 +13,7 @@ DTEND:19960920T220000Z
 STATUS:CONFIRMED
 CATEGORIES:CONFERENCE
 SUMMARY:Networld+Interop Conference
-DESCRIPTION:Networld+Interop Conference and Exhibit\nAtlanta World Atlanta, Georgia
+DESCRIPTION:Networld+Interop Conference and Exhibit\n Atlanta World Atlanta, Georgia
 END:VEVENT
 END:VCALENDAR
 """;
