@@ -1,5 +1,9 @@
 # ICalendar Plugin
 
+> [!NOTE]
+> This package is made by Brian Tutovic on [GitLab](https://gitlab.com/powerbuilding/opensource/mobile/support-libraries/icalendar-dart).
+> We made minor adjustments to the code to address some compatibility issues
+
 Serializes and Deserializes ICalendar text. Offers 99+% coverage of the ICalendar RFC.
 
 **Note:** Non-standard Parameters/Properties/Components (ie: x-\* named things) and IANA-Token based names do not have first class support at the moment. Feel free to submit an MR or extend one of the abstract classes within your project to support your usecase.
