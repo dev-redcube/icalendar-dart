@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
+import 'package:icalendar/icalendar.dart';
 
 import 'crawled_property.dart';
 
@@ -44,6 +45,33 @@ class CrawledBlock extends Equatable {
         nestedBlocks.last.addPropertyAtDepth(property, depth - 1),
       ],
     );
+  }
+
+  CrawledBlock replaceLastPropertyAtDepth(CrawledProperty property, int depth) {
+    assert(depth >= 0);
+    assert(depth == 0 || nestedBlocks.isNotEmpty);
+    if (depth == 0) {
+      return copyWith(
+        properties: [...properties.sublist(0, properties.length - 1), property],
+      );
+    }
+    return copyWith(
+      nestedBlocks: [
+        ...(nestedBlocks.length > 1
+            ? nestedBlocks.sublist(0, nestedBlocks.length - 1)
+            : []),
+        nestedBlocks.last.replaceLastPropertyAtDepth(property, depth - 1),
+      ],
+    );
+  }
+
+  CrawledProperty getLastPropertyAtDepth(int depth) {
+    assert(depth >= 0);
+    assert(depth == 0 || nestedBlocks.isNotEmpty);
+    if (depth == 0) {
+      return properties.last;
+    }
+    return nestedBlocks.last.getLastPropertyAtDepth(depth - 1);
   }
 
   CrawledBlock addBlockAtDepth(CrawledBlock block, int depth) {

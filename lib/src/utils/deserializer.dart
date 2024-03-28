@@ -53,12 +53,23 @@ List<CrawledBlock> crawlICalendarLines(List<String> lines) {
     }
 
     // parse property
-    final propertyName =
-        normalizedLine.substring(0, normalizedLine.indexOf(RegExp(r';|:')));
+    final indexOfColon = normalizedLine.indexOf(RegExp(r';|:'));
+    if (indexOfColon == -1) {
+      // No new Property. Property from line before is continued
+      final property = blocks.last.getLastPropertyAtDepth(nestedBlockDepth);
+      final newProp =
+          property.copyWith(value: property.value + normalizedLine);
+
+      blocks[blocks.length - 1] =
+          blocks.last.replaceLastPropertyAtDepth(newProp, nestedBlockDepth);
+      continue;
+    }
+    final propertyName = normalizedLine.substring(0, indexOfColon);
 
     int curIndex = propertyName.length;
     List<CrawledParameter> parameters = [];
 
+    // ; => extra parameter
     while (normalizedLine[curIndex] != ":") {
       final nameEndIndex = normalizedLine.indexOf("=", curIndex);
       final name = normalizedLine.substring(curIndex + 1, nameEndIndex);

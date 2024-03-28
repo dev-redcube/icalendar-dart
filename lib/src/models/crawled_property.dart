@@ -19,4 +19,15 @@ class CrawledProperty extends Equatable {
 
   @override
   List<Object?> get props => [];
+
+  CrawledProperty copyWith({
+    String? name,
+    String? value,
+    List<CrawledParameter>? parameters,
+  }) =>
+      CrawledProperty(
+        name: name ?? this.name,
+        value: value ?? this.value,
+        parameters: parameters ?? this.parameters,
+      );
 }
