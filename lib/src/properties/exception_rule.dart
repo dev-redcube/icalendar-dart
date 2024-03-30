@@ -10,6 +10,7 @@ import '../models/recurrence_rule.dart';
 import '../values/recurrence_rule.dart';
 
 /// RFC2445 Section 4.8.5.2
+/// This property is deprecated as of RFC5545
 class ExceptionRuleProperty extends CalendarProperty<RecurrenceRuleValue> {
   ExceptionRuleProperty({
     required RecurrenceFrequency frequency,
