@@ -41,6 +41,7 @@ import '../properties/summary.dart';
 import '../properties/time_transparency.dart';
 import '../properties/unique_identifier.dart';
 import '../properties/url.dart';
+import '../utils/event_component_splitter.dart';
 import 'alarm.dart';
 
 /// RFC2445 Section 4.6.1
@@ -429,7 +430,7 @@ class EventComponent extends CalendarComponent {
     ];
   }
 
-  EventComponent copyWith(
+  EventComponent copyWith({
     ClassificationProperty? classification,
     DateTimeCreatedProperty? dateTimeCreated,
     DescriptionProperty? description,
@@ -466,7 +467,7 @@ class EventComponent extends CalendarComponent {
     List<DisplayAlarmComponent>? displayAlarms,
     List<EmailAlarmComponent>? emailAlarms,
     List<ProcedureAlarmComponent>? procedureAlarms,
-  ) =>
+  }) =>
       EventComponent(
         classification: classification ?? this.classification,
         dateTimeCreated: dateTimeCreated ?? this.dateTimeCreated,
@@ -505,4 +506,54 @@ class EventComponent extends CalendarComponent {
         emailAlarms: emailAlarms ?? this.emailAlarms,
         procedureAlarms: procedureAlarms ?? this.procedureAlarms,
       );
+
+  List<EventComponent> splitComponent({
+    DateTime? rruleStart,
+  }) =>
+      splitEventComponent(this, rruleStart: rruleStart);
+
+  EventComponent noRepeat() => EventComponent(
+        classification: classification,
+        dateTimeCreated: dateTimeCreated,
+        description: description,
+        dateTimeStart: dateTimeStart,
+        geographicPosition: geographicPosition,
+        lastModified: lastModified,
+        location: location,
+        organizer: organizer,
+        priority: priority,
+        dateTimeStamp: dateTimeStamp,
+        sequence: sequence,
+        status: status,
+        summary: summary,
+        timeTransparency: timeTransparency,
+        uniqueIdentifier: uniqueIdentifier,
+        url: url,
+        recurrenceId: null,
+        end: end,
+        duration: duration,
+        uriAttachments: uriAttachments,
+        binaryAttachments: binaryAttachments,
+        attendees: attendees,
+        categories: categories,
+        comments: comments,
+        contacts: contacts,
+        exceptionDateTimes: null,
+        exceptionRules: null,
+        requestStatuses: requestStatuses,
+        relatedTo: relatedTo,
+        resources: resources,
+        recurrenceDateTimes: null,
+        recurrenceRules: null,
+        audioAlarms: audioAlarms,
+        displayAlarms: displayAlarms,
+        emailAlarms: emailAlarms,
+        procedureAlarms: procedureAlarms,
+      );
+
+  Duration computeDuration() {
+    assert(duration != null || end != null);
+    return duration?.value.value ??
+        end!.value.value.difference(dateTimeStart!.value.value);
+  }
 }

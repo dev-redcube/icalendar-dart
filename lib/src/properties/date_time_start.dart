@@ -71,4 +71,15 @@ class DateTimeStartProperty extends CalendarProperty<CalendarValue<DateTime>> {
         TimeZoneIdentifierParameter(timeZoneIdentifier!),
     ];
   }
+
+  DateTimeStartProperty copyWith({
+    DateTime? value,
+    ValueType? valueType,
+    String? timeZoneIdentifier,
+  }) =>
+      DateTimeStartProperty(
+        value ?? this.value.value,
+        valueType: valueType ?? this.valueType,
+        timeZoneIdentifier: timeZoneIdentifier ?? this.timeZoneIdentifier,
+      );
 }

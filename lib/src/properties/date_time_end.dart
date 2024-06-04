@@ -71,4 +71,15 @@ class DateTimeEndProperty extends CalendarProperty<CalendarValue<DateTime>> {
         TimeZoneIdentifierParameter(timeZoneIdentifier!),
     ];
   }
+
+  DateTimeEndProperty copyWith({
+    DateTime? value,
+    ValueType? valueType,
+    String? timeZoneIdentifier,
+  }) =>
+      DateTimeEndProperty(
+        value ?? this.value.value,
+        valueType: valueType ?? this.valueType,
+        timeZoneIdentifier: timeZoneIdentifier ?? this.timeZoneIdentifier,
+      );
 }
