@@ -74,6 +74,9 @@ void main() {
       final splitUp = withRule.splitComponent();
 
       expect(splitUp, hasLength(5));
+
+      // RecurrenceRules are removed
+      expect(splitUp.where((e) => e.recurrenceRules != null), hasLength(0));
     });
 
     test("RRULE with two rules", () {
@@ -102,7 +105,7 @@ void main() {
       expect(splitUp, hasLength(4));
     });
 
-    test("RRULE without until", () {
+    test("RRULE with until", () {
       final withRule = event.copyWith(recurrenceRules: [
         RecurrenceRuleProperty(
             frequency: RecurrenceFrequency.daily,
@@ -146,5 +149,33 @@ void main() {
 
       expect(splitUp, hasLength(365));
     });
+  });
+
+  test("RRULE and RecurrenceDateTimes", () {
+    final withRule = event.copyWith(
+      recurrenceDateTimes: [
+        RecurrenceDateTimesProperty([
+          DateTime(2024, 06, 05),
+        ]),
+      ],
+      recurrenceRules: [
+        // Every 2 days, 5 times
+        RecurrenceRuleProperty(
+          frequency: RecurrenceFrequency.daily,
+          interval: 2,
+          count: 5,
+        ),
+      ],
+    );
+
+    final splitUp = withRule.splitComponent();
+
+    expect(splitUp, hasLength(6));
+
+    expect(splitUp.where((e) => e.recurrenceRules != null), hasLength(0));
+    expect(splitUp.where((e) => e.recurrenceDateTimes != null), hasLength(0));
+    expect(splitUp.where((e) => e.recurrenceId != null), hasLength(0));
+    expect(splitUp.where((e) => e.exceptionDateTimes != null), hasLength(0));
+    expect(splitUp.where((e) => e.exceptionRules != null), hasLength(0));
   });
 }

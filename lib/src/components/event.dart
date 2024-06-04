@@ -507,6 +507,8 @@ class EventComponent extends CalendarComponent {
         procedureAlarms: procedureAlarms ?? this.procedureAlarms,
       );
 
+  /// Split a component into multiple without repeating rules
+  /// [rruleEnd] is the end date for the RRULE, infinite not supported. Defaults to 2 Years
   List<EventComponent> splitComponent({
     DateTime? rruleEnd,
   }) =>
