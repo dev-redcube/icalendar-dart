@@ -61,7 +61,6 @@ void main() {
       final splitUp = withRule.splitComponent();
 
       expect(splitUp, hasLength(4));
-
     });
   });
 
@@ -116,11 +115,10 @@ void main() {
 
       final splitUp = withRule.splitComponent();
 
-
       expect(splitUp, hasLength(5));
     });
 
-    test("RRULE without end", () {
+    test("RRULE until date and exception", () {
       final withRule = event.copyWith(recurrenceRules: [
         RecurrenceRuleProperty(
             frequency: RecurrenceFrequency.daily,
@@ -133,7 +131,20 @@ void main() {
 
       final splitUp = withRule.splitComponent();
 
-      expect(splitUp, hasLength(5));
+      expect(splitUp, hasLength(4));
+    });
+
+    test("RRULE without end", () {
+      final withRule = event.copyWith(recurrenceRules: [
+        RecurrenceRuleProperty(
+          frequency: RecurrenceFrequency.daily,
+          interval: 2,
+        )
+      ]);
+
+      final splitUp = withRule.splitComponent();
+
+      expect(splitUp, hasLength(365));
     });
   });
 }

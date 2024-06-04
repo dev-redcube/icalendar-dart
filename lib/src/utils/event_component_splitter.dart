@@ -4,7 +4,7 @@ import 'package:rrule/rrule.dart' as rrule;
 
 List<EventComponent> splitEventComponent(
   EventComponent component, {
-  DateTime? rruleStart,
+  DateTime? rruleEnd,
 }) {
   final List<EventComponent> splitComponents = [];
 
@@ -15,7 +15,7 @@ List<EventComponent> splitEventComponent(
 
   // RRULE
   if (component.recurrenceRules != null) {
-    splitComponents.addAll(_splitRRule(component, rruleStart));
+    splitComponents.addAll(_splitRRule(component, rruleEnd));
   } else {
     splitComponents.add(component.noRepeat());
   }
@@ -56,16 +56,23 @@ List<EventComponent> _splitRecurrenceDates(EventComponent component) {
 }
 
 /// Splits an EventComponent with RRULE into multiple
-/// [start] defaults to 01.01.1970
-List<EventComponent> _splitRRule(EventComponent component, DateTime? start) {
+/// [end] defaults to 01.01.1970
+List<EventComponent> _splitRRule(EventComponent component, DateTime? end) {
   List<EventComponent> splitComponents = [];
   List<DateTime> dates = [];
 
   for (final rule in component.recurrenceRules!) {
     final recur = rrule.RecurrenceRule.fromString(rule.toString());
+
+    final DateTime beforeDate = end ??
+        component.dateTimeStart!.value.value.add(const Duration(days: 365 * 2));
+
     final recurrences = recur.getInstances(
       start: component.dateTimeStart!.value.value.copyWith(isUtc: true),
+      // Infinity is not possible. Default to 2 years
+      before: beforeDate.copyWith(isUtc: true),
     );
+
     final Iterable<DateTime> exceptionDates = component.exceptionDateTimes
             ?.expand(
                 (items) => items.value.value.map((e) => e.value.noTime())) ??

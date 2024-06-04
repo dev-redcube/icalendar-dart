@@ -508,9 +508,9 @@ class EventComponent extends CalendarComponent {
       );
 
   List<EventComponent> splitComponent({
-    DateTime? rruleStart,
+    DateTime? rruleEnd,
   }) =>
-      splitEventComponent(this, rruleStart: rruleStart);
+      splitEventComponent(this, rruleEnd: rruleEnd);
 
   EventComponent noRepeat() => EventComponent(
         classification: classification,
